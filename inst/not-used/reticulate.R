@@ -1,20 +1,28 @@
-#' Conda install function (modified from reticulate)
+#' Conda install function (modified from reticulate). Necessary to add `channel`
+#' to list of parameters
 #'
-#' R functions for managing Python [conda
-#' environments](https://conda.io/docs/user-guide/tasks/manage-environments.html).
+#' R functions for managing Python \href{https://conda.io/docs/user-guide/tasks/manage-environments.html}{conda environments}.
 #'
 #' @param envname Name of conda environment
+#'
 #' @param conda Path to conda executable (or "auto" to find conda using the
 #'   PATH and other conventional install locations).
+#'
 #' @param packages Character vector with package names to install or remove.
+#'
 #' @param pip `TRUE` to use pip (defaults to `FALSE`)
 #'
-#' @param forge Include the [Conda Forge](https://conda-forge.org/) repository.
+#' @param forge Include the  \href{https://conda-forge.org/}{Conda Forge} repository.
+#'
 #' @param pip_ignore_installed Ignore installed versions when using pip. This is `TRUE` by default
 #'   so that specific package versions can be installed even if they are downgrades. The `FALSE`
 #'   option is useful for situations where you don't want a pip install to attempt an overwrite
-#'   of a conda binary package (e.g. SciPy on Windows which is very difficult to install via
-#'   pip due to compilation requirements).
+#'   of a conda binary package (e.g. _SciPy_ on _Windows_ which is very difficult to install via
+#'   `pip` due to compilation requirements).
+#'
+#' @param python_version is the _Python_ version to install. Python __3.4__ is
+#'   installed by default. But you could specify for instance:
+#'   `python_version="3.7"`.
 #'
 #' @param channel conda channel for pytorch
 #'
@@ -26,11 +34,7 @@
 #'   `conda_binary()` returns the location of the main conda binary or `NULL`
 #'   if none can be found.
 #'
-
-#'
-#' @name conda-tools
-#'
-#' @keywords internal
+#' @rdname conda-tools
 #'
 #' @export
 conda_install <- function(envname = NULL,
@@ -45,6 +49,8 @@ conda_install <- function(envname = NULL,
 {
   # rTorch::conda_install(envname="r-torch-37", packages="pytorch-cpu",
   #         channel = "pytorch", conda="auto", python_version = "3.7")
+  #
+  #
   # resolve conda binary
   conda <- conda_binary(conda)
 
@@ -141,7 +147,7 @@ condaenv_resolve <- function(envname = NULL) {
 python_environment_resolve <- function(envname = NULL, resolve = identity) {
 
   # use RETICULATE_PYTHON_ENV as default
-  envname <- envname %||% Sys.getenv("RETICULATE_PYTHON_ENV", unset = "r-reticulate")
+  envname <- envname %||% Sys.getenv("RETICULATE_PYTHON_ENV", unset = "r-torch")
 
   # treat environment 'names' containing slashes as full paths
   if (grepl("[/\\]", envname)) {
